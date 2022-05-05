@@ -1,0 +1,48 @@
+name: autocast
+channels:
+  - pytorch
+  - defaults
+  - hargup/label/pypi
+dependencies:
+  - python==3.7.9
+  - cudatoolkit
+  - h5py
+  - ipython
+  - pillow==8.0.1
+  - pip==20.2.4
+  - pytorch==1.7.0
+  - scipy==1.5.2
+  - tensorflow==2.3.0
+  - torchvision==0.8.1
+  - tqdm==4.50.2
+  - watchdog==0.10.3
+  - yaml==0.2.5
+  - pip:
+    - h5py
+    - imageio
+    - loguru==0.5.3
+    - networkx==2.2
+    - numba
+    - numpy
+    - opencv-python
+    - paho-mqtt==1.5.1
+    - pandas
+    - pygame
+    - py-trees==0.8.3
+    - ray==1.0.1
+    - redis==3.4.1
+    - scipy
+    - scikit-image
+    - scikit-learn
+    - shapely
+    - subprocess32==3.5.4
+    - tqdm
+    - tensorboardx==2.1
+    - torch-cluster==1.5.9
+    - torch-geometric==1.6.3
+    - torch-scatter==2.0.6
+    - torch-sparse==0.6.9
+    - torch-spline-conv==1.2.1
+    - wandb==0.10.12
+    - xmlschema
+    - MinkowskiEngine==0.4.3 # Requirement CUDA>=10.1.243

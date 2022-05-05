@@ -1,0 +1,42 @@
+{
+    "available_scenarios": [
+        {
+            "Town03": [
+                {
+                    "available_event_configurations": [
+                        {
+                            "other_actors": {
+                                "left": [
+                                    {
+                                        "pitch": "0.0",
+                                        "x": "-43.89",
+                                        "y": "131.46",
+                                        "yaw": "179.226013",
+                                        "z": "1.0"
+                                    }
+                                ],
+                                "right": [
+                                    {
+                                        "pitch": "0.0",
+                                        "x": "-116.1",
+                                        "y": "136.73",
+                                        "yaw": "359.226013",
+                                        "z": "1.0"
+                                    }
+                                ]
+                            },
+                            "transform": {
+                                "pitch": "0",
+                                "x": -88.12,
+                                "y": 115.68,
+                                "yaw": 89.0,
+                                "z": 1.0
+                            }
+                        }
+                    ],
+                    "scenario_type": "AutoCastTest"
+                }
+            ]
+        }
+    ]
+}
