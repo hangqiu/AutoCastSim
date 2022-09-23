@@ -102,6 +102,8 @@ class Utils:
 
     PASSIVE_ACTOR_ROLENAME = 'passive'
 
+    SUPPRESS_FRAMES_UNTIL = -1          # "skip" transmitting data on frame IDs lower than this. -1 to disable.
+
     @staticmethod
     def get_parser(VERSION):
         description = ("AutoCast Config: Setup, Run and Evaluate scenarios using CARLA Scenario Runner")
@@ -196,8 +198,8 @@ class Utils:
                             help='DAgger-Specific param, controls the sampling of expert vs. student action')
         parser.add_argument('--seed', type=int, default=0,
                             help='random seed used for background traffic')
+        parser.add_argument('--suppressTxUntil', type=int, help="Suppress / skip sending AutoCast frames until a certain frame ID has been reached", default = -1)
         return parser
-
 
     @staticmethod
     def parse_config_flags(arguments):
@@ -264,6 +266,9 @@ class Utils:
             Utils.PASSIVE_COLLIDER = True
             print("Collider is NOT sharing")
 
+        if arguments.suppressTxUntil >= 1:
+            Utils.SUPPRESS_FRAMES_UNTIL = int(arguments.suppressTxUntil)
+            print(f"Suppressing TX frames until frame # {Utils.SUPPRESS_FRAMES_UNTIL}")
 
     @staticmethod
     def transmission_time_sec(points_size, rate):

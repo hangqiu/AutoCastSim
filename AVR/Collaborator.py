@@ -35,6 +35,9 @@ class VehicleState(object):
         self.PeerList_DataChannel = []
         self.PeerList_ControlChannel = []
 
+        # Suppress frame IDs 0 until X
+        self.suppressFramesUntil = int(Utils.SUPPRESS_FRAMES_UNTIL)
+
     def get_state(self):
         # TODO: these are mutables. use deepcopy
         self.lock.acquire()
@@ -177,6 +180,7 @@ class Collaborator(object):
     def is_alive(self):
         return self.vehicle.is_alive
 
+    # This is the main loop for each agent
     def run_callback(self, lidar_obj):
 
         if lidar_obj is None:
@@ -236,7 +240,11 @@ class Collaborator(object):
 
             schedule_vector, reward_vector, length_vector = self.compute_schedule(beaconlist, frameId)
 
-            if not Utils.AGNOSTIC:
+            # Suppress frame?
+            suppressFrame = (mState.FrameID < (mState.suppressFramesUntil or -1))
+            # print(f"\t\tFrame suppressed: {suppressFrame}")
+
+            if not (Utils.AGNOSTIC or suppressFrame):
                 # Save the first one into the agentwrapper
                 schedule_reference = self.agent_wrapper.update_schedule(mState.FrameID, schedule_vector, beaconlist)
                 # consistency check
@@ -248,14 +256,18 @@ class Collaborator(object):
                         print(ref_schedule)
                         break
 
-
             sche_time = time.time()
             if Utils.TIMEPROFILE: print("\t\tSchedule: {} sec".format(sche_time - lidar_time))
 
+            
+            last_tx_idx_in_schedule = 0
+
             """model pkt loss"""
-            # last_tx_idx_in_schedule = 0
             # if frameId % 5 == 0:
-            last_tx_idx_in_schedule = self.TX_Data(mState, schedule_vector, length_vector)
+            
+            # Suppress TX_DATA if needed
+            if not suppressFrame:
+                last_tx_idx_in_schedule = self.TX_Data(mState, schedule_vector, length_vector)
 
             tx_time = time.time()
             if Utils.TIMEPROFILE:print("\t\tTX: {} sec".format(tx_time - sche_time))
@@ -514,6 +526,8 @@ class Collaborator(object):
         return schedule_vector, reward_vector, length_vector
 
     def TX_Data(self, mState, schedule_vector, length_vector):
+
+        # Frame ID in mState.FrameID
 
         if len(schedule_vector) == 0:
             return 0
