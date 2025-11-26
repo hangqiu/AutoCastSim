@@ -10,7 +10,11 @@ from srunner.scenariomanager.carla_data_provider import CarlaActorPool, CarlaDat
 import carla
 import imageio
 
-from MinkowskiEngine.utils import sparse_quantize
+try:
+    from MinkowskiEngine.utils import sparse_quantize
+except ImportError:
+    print("MinkowskiEngine not found, using stub implementation")
+    from AVR.minkowski_stub import sparse_quantize
 # from lidar_cython import fast_lidar
 from numba import jit
 
